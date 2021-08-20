@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="bdpersonasModelStoreContainer" CdmEntityContainer="PersonasContext">
+    <FunctionImportMapping FunctionImportName="Actualizar_Persona" FunctionName="bdpersonasModel.Store.Actualizar_Persona" />
+    <FunctionImportMapping FunctionImportName="Eliminar_Persona" FunctionName="bdpersonasModel.Store.Eliminar_Persona" />
+    <EntitySetMapping Name="pais">
+      <EntityTypeMapping TypeName="bdpersonasModel.pais">
+        <MappingFragment StoreEntitySet="pais">
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="persona">
+      <EntityTypeMapping TypeName="bdpersonasModel.persona">
+        <MappingFragment StoreEntitySet="persona">
+          <ScalarProperty Name="paisNacim" ColumnName="paisNacim" />
+          <ScalarProperty Name="fechaFallec" ColumnName="fechaFallec" />
+          <ScalarProperty Name="fechaNacim" ColumnName="fechaNacim" />
+          <ScalarProperty Name="apellidos" ColumnName="apellidos" />
+          <ScalarProperty Name="nombres" ColumnName="nombres" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="Informe_Nac_Fallec" FunctionName="bdpersonasModel.Store.Informe_Nac_Fallec">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="bdpersonasModel.Informe_Nac_Fallec_Result">
+          <ScalarProperty Name="AÑO" ColumnName="AÑO" />
+          <ScalarProperty Name="NACIDOS" ColumnName="NACIDOS" />
+          <ScalarProperty Name="MUERTOS" ColumnName="MUERTOS" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+  </EntityContainerMapping>
+</Mapping>

@@ -1,0 +1,9 @@
+﻿@model IEnumerable<AppPersonas.Models.pais>
+
+<select class="form-control" id="paisNacim" name="paisNacim">
+    @foreach (var item in Model)
+    {
+        <option value="@item.id">@item.nombre</option>
+    }
+</select>
+

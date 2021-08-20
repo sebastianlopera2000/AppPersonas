@@ -1,0 +1,82 @@
+﻿@model IEnumerable<AppPersonas.Models.PersonaBU>
+
+@{
+    ViewBag.Title = "Filtro";
+}
+
+<h2>Filtro: País y fecha de nacimiento</h2>
+
+<ul class="list-group consultas" style="display: flex; align-items: center;">
+    <li class="list-group-item">@Html.ActionLink("Nuevo", "Agregar")</li>
+    <li class="list-group-item">@Html.ActionLink("Ordenar por país y fecha de nacimiento", "OrdenPais")</li>
+    <li class="list-group-item">@Html.ActionLink("Ordenar por edad", "OrdenEdad")</li>
+    <li class="list-group-item">@Html.ActionLink("Ordenar por fallecidos", "OrdenFallecidos")</li>
+</ul>
+<table class="table table-bordered table-hover table-striped">
+    <thead>
+        <tr class="text-uppercase">
+            <th class="bg-primary text-center">
+                @Html.DisplayNameFor(model => model.nombres)
+            </th>
+            <th class="bg-primary text-center">
+                @Html.DisplayNameFor(model => model.apellidos)
+            </th>
+            <th class="bg-primary text-center">
+                <span>Fecha de Nacimiento</span>
+            </th>
+            <th class="bg-primary text-center">
+                <span>Fecha de Fallecimiento</span>
+            </th>
+            <th class="bg-primary text-center">
+                <span>País de Nacimiento</span>
+            </th>
+            <th class="bg-primary text-center">
+                <span>Acciones</span>
+            </th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.nombres)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.apellidos)
+                </td>
+                <td class="text-center">
+                    @item.fechaNacim.ToShortDateString()
+                </td>
+                <td class="text-center">
+                    @{
+                        if (item.fechaFallec != null)
+                        {
+                            @Convert.ToDateTime(item.fechaFallec).ToShortDateString();
+                        }
+                    }
+                </td>
+                <td>
+                    @item.NombrePais
+                </td>
+                <td class="text-center">
+                    @Html.ActionLink("Editar", "Editar", new { id = item.id }, new { @class = "text-success" }) |
+                    @Html.ActionLink("Eliminar", "Eliminar", new { id = item.id }, new { @class = "btnEliminar text-danger" })
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+@section scripts{
+    <script>
+        $('.btnEliminar').click((e) => {
+            if (!confirm('¿Desea eliminar este registro?')) {
+                e.preventDefault();
+            }
+        });
+    </script>
+}
+

@@ -1,0 +1,46 @@
+﻿@model IEnumerable<AppPersonas.Models.persona>
+
+<h2>Filtro: Nacidos - Fallecidos / Año</h2>
+
+<ul class="list-group consultas" style="display: flex; align-items: center;">
+    <li class="list-group-item">@Html.ActionLink("Nuevo", "Agregar")</li>
+    <li class="list-group-item">@Html.ActionLink("Ordenar por país y fecha de nacimiento", "OrdenPais")</li>
+    <li class="list-group-item">@Html.ActionLink("Ordenar por edad", "OrdenEdad")</li>
+    <li class="list-group-item">@Html.ActionLink("Ordenar por fallecidos", "OrdenFallecidos")</li>
+    <li class="list-group-item">@Html.ActionLink("Informe Nacimientos - Fallecimiento / Año", "Informe")</li>
+</ul>
+<table class="table table-bordered table-hover table-striped">
+    <thead>
+        <tr class="text-uppercase">
+            <th class="bg-primary text-center">
+                AÑO
+            </th>
+            <th class="bg-primary text-center">
+                NACIDOS
+            </th>
+            <th class="bg-primary text-center">
+                FALLECIDOS
+            </th>         
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+@section scripts{
+    <script>
+        $('.btnEliminar').click((e) => {
+            if (!confirm('¿Desea eliminar este registro?')) {
+                e.preventDefault();
+            }
+        });
+    </script>
+}

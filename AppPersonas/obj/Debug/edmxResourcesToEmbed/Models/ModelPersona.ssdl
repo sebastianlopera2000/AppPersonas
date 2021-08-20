@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="bdpersonasModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="pais">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre" Type="varchar" MaxLength="150" />
+  </EntityType>
+  <EntityType Name="persona">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombres" Type="varchar" MaxLength="250" Nullable="false" />
+    <Property Name="apellidos" Type="varchar" MaxLength="250" Nullable="false" />
+    <Property Name="fechaNacim" Type="datetime" Nullable="false" />
+    <Property Name="fechaFallec" Type="datetime" />
+    <Property Name="paisNacim" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="fk_pais">
+    <End Role="pais" Type="Self.pais" Multiplicity="1" />
+    <End Role="persona" Type="Self.persona" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="pais">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="persona">
+        <PropertyRef Name="paisNacim" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="Actualizar_Persona" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="Id" Type="int" Mode="In" />
+    <Parameter Name="nombres" Type="varchar" Mode="In" />
+    <Parameter Name="apellidos" Type="varchar" Mode="In" />
+    <Parameter Name="fechaNacim" Type="datetime" Mode="In" />
+    <Parameter Name="fechaFallec" Type="datetime" Mode="In" />
+    <Parameter Name="paisNacim" Type="int" Mode="In" />
+  </Function>
+  <Function Name="Eliminar_Persona" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="Id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="Informe_Nac_Fallec" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <EntityContainer Name="bdpersonasModelStoreContainer">
+    <EntitySet Name="pais" EntityType="Self.pais" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="persona" EntityType="Self.persona" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="fk_pais" Association="Self.fk_pais">
+      <End Role="pais" EntitySet="pais" />
+      <End Role="persona" EntitySet="persona" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

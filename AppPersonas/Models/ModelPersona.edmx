@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="bdpersonasModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="pais">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="150" />
+        </EntityType>
+        <EntityType Name="persona">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombres" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="apellidos" Type="varchar" MaxLength="250" Nullable="false" />
+          <Property Name="fechaNacim" Type="datetime" Nullable="false" />
+          <Property Name="fechaFallec" Type="datetime" />
+          <Property Name="paisNacim" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="fk_pais">
+          <End Role="pais" Type="Self.pais" Multiplicity="1" />
+          <End Role="persona" Type="Self.persona" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="pais">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="persona">
+              <PropertyRef Name="paisNacim" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="Actualizar_Persona" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Id" Type="int" Mode="In" />
+          <Parameter Name="nombres" Type="varchar" Mode="In" />
+          <Parameter Name="apellidos" Type="varchar" Mode="In" />
+          <Parameter Name="fechaNacim" Type="datetime" Mode="In" />
+          <Parameter Name="fechaFallec" Type="datetime" Mode="In" />
+          <Parameter Name="paisNacim" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Eliminar_Persona" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Informe_Nac_Fallec" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="bdpersonasModelStoreContainer">
+          <EntitySet Name="pais" EntityType="Self.pais" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="persona" EntityType="Self.persona" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="fk_pais" Association="Self.fk_pais">
+            <End Role="pais" EntitySet="pais" />
+            <End Role="persona" EntitySet="persona" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="bdpersonasModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="PersonasContext" annotation:LazyLoadingEnabled="true">
+          <FunctionImport Name="Actualizar_Persona">
+            <Parameter Name="Id" Mode="In" Type="Int32" />
+            <Parameter Name="nombres" Mode="In" Type="String" />
+            <Parameter Name="apellidos" Mode="In" Type="String" />
+            <Parameter Name="fechaNacim" Mode="In" Type="DateTime" />
+            <Parameter Name="fechaFallec" Mode="In" Type="DateTime" />
+            <Parameter Name="paisNacim" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Eliminar_Persona">
+          <Parameter Name="Id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="pais" EntityType="bdpersonasModel.pais" />
+          <EntitySet Name="persona" EntityType="bdpersonasModel.persona" />
+          <AssociationSet Name="fk_pais" Association="bdpersonasModel.fk_pais">
+            <End Role="pais" EntitySet="pais" />
+            <End Role="persona" EntitySet="persona" />
+          </AssociationSet>
+          <FunctionImport Name="Informe_Nac_Fallec" ReturnType="Collection(bdpersonasModel.Informe_Nac_Fallec_Result)" />
+        </EntityContainer>
+        <EntityType Name="pais">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="persona" Relationship="bdpersonasModel.fk_pais" FromRole="pais" ToRole="persona" />
+        </EntityType>
+        <EntityType Name="persona">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombres" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="apellidos" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="fechaNacim" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="fechaFallec" Type="DateTime" Precision="3" />
+          <Property Name="paisNacim" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="pais" Relationship="bdpersonasModel.fk_pais" FromRole="persona" ToRole="pais" />
+        </EntityType>
+        <Association Name="fk_pais">
+          <End Type="bdpersonasModel.pais" Role="pais" Multiplicity="1" />
+          <End Type="bdpersonasModel.persona" Role="persona" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="pais">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="persona">
+              <PropertyRef Name="paisNacim" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="Informe_Nac_Fallec_Result">
+          <Property Type="Int32" Name="AÑO" Nullable="true" />
+          <Property Type="Int32" Name="NACIDOS" Nullable="true" />
+          <Property Type="Int32" Name="MUERTOS" Nullable="true" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="bdpersonasModelStoreContainer" CdmEntityContainer="PersonasContext">
+          <FunctionImportMapping FunctionImportName="Actualizar_Persona" FunctionName="bdpersonasModel.Store.Actualizar_Persona" />
+          <FunctionImportMapping FunctionImportName="Eliminar_Persona" FunctionName="bdpersonasModel.Store.Eliminar_Persona" />
+          <EntitySetMapping Name="pais">
+            <EntityTypeMapping TypeName="bdpersonasModel.pais">
+              <MappingFragment StoreEntitySet="pais">
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="persona">
+            <EntityTypeMapping TypeName="bdpersonasModel.persona">
+              <MappingFragment StoreEntitySet="persona">
+                <ScalarProperty Name="paisNacim" ColumnName="paisNacim" />
+                <ScalarProperty Name="fechaFallec" ColumnName="fechaFallec" />
+                <ScalarProperty Name="fechaNacim" ColumnName="fechaNacim" />
+                <ScalarProperty Name="apellidos" ColumnName="apellidos" />
+                <ScalarProperty Name="nombres" ColumnName="nombres" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="Informe_Nac_Fallec" FunctionName="bdpersonasModel.Store.Informe_Nac_Fallec">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="bdpersonasModel.Informe_Nac_Fallec_Result">
+                <ScalarProperty Name="AÑO" ColumnName="AÑO" />
+                <ScalarProperty Name="NACIDOS" ColumnName="NACIDOS" />
+                <ScalarProperty Name="MUERTOS" ColumnName="MUERTOS" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

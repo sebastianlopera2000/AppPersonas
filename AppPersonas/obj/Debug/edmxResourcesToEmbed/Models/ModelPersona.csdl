@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="bdpersonasModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="PersonasContext" annotation:LazyLoadingEnabled="true">
+    <FunctionImport Name="Actualizar_Persona">
+      <Parameter Name="Id" Mode="In" Type="Int32" />
+      <Parameter Name="nombres" Mode="In" Type="String" />
+      <Parameter Name="apellidos" Mode="In" Type="String" />
+      <Parameter Name="fechaNacim" Mode="In" Type="DateTime" />
+      <Parameter Name="fechaFallec" Mode="In" Type="DateTime" />
+      <Parameter Name="paisNacim" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="Eliminar_Persona">
+      <Parameter Name="Id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <EntitySet Name="pais" EntityType="bdpersonasModel.pais" />
+    <EntitySet Name="persona" EntityType="bdpersonasModel.persona" />
+    <AssociationSet Name="fk_pais" Association="bdpersonasModel.fk_pais">
+      <End Role="pais" EntitySet="pais" />
+      <End Role="persona" EntitySet="persona" />
+    </AssociationSet>
+    <FunctionImport Name="Informe_Nac_Fallec" ReturnType="Collection(bdpersonasModel.Informe_Nac_Fallec_Result)" />
+  </EntityContainer>
+  <EntityType Name="pais">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="persona" Relationship="bdpersonasModel.fk_pais" FromRole="pais" ToRole="persona" />
+  </EntityType>
+  <EntityType Name="persona">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombres" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="apellidos" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="fechaNacim" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="fechaFallec" Type="DateTime" Precision="3" />
+    <Property Name="paisNacim" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="pais" Relationship="bdpersonasModel.fk_pais" FromRole="persona" ToRole="pais" />
+  </EntityType>
+  <Association Name="fk_pais">
+    <End Type="bdpersonasModel.pais" Role="pais" Multiplicity="1" />
+    <End Type="bdpersonasModel.persona" Role="persona" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="pais">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="persona">
+        <PropertyRef Name="paisNacim" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <ComplexType Name="Informe_Nac_Fallec_Result">
+    <Property Type="Int32" Name="AÑO" Nullable="true" />
+    <Property Type="Int32" Name="NACIDOS" Nullable="true" />
+    <Property Type="Int32" Name="MUERTOS" Nullable="true" />
+  </ComplexType>
+</Schema>
